@@ -7,26 +7,33 @@
 export const downloadAudio = async (url: string): Promise<void> => {
   if (!url) return;
 
-  const endpoint: string = import.meta.env.VITE_DOWNLOAD_ENDPOINT || 'https://ytdl.do.nerdspeak.com/';
+  const endpoint: string = import.meta.env.VITE_DOWNLOAD_ENDPOINT || 'https://ytdl.do.nerdspeak.com';
+  const apiKey: string = '13dde8c6-kjna-8141-v6gu-86005e6fa28c';
 
   try {
+    console.log(`Fetching title for URL: ${url}`);
     const titleResponse = await fetch(`${endpoint}/title?url=${encodeURIComponent(url)}`, {
         method: 'GET',
         headers: {
-            'x-api-key': '13dde8c6-kjna-8141-v6gu-86005e6fa28c'
+            'x-api-key': apiKey
         }
     });
+
     if (!titleResponse.ok) {
+        console.error(`Failed to fetch title for URL: ${url}, Status: ${titleResponse.status}`);
         throw new Error('Failed to fetch title');
     }
+
     const { title } = await titleResponse.json();
+    console.log(`Title fetched successfully for URL: ${url}, Title: ${title}`);
+
     const safeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase(); // Create a safe filename
     const filename = `${safeTitle}.mp3` || 'download.mp3';
 
     const response: Response = await fetch(`${endpoint}/download?url=${encodeURIComponent(url)}`, {
         method: 'GET',
         headers: {
-            'x-api-key': '13dde8c6-kjna-8141-v6gu-86005e6fa28c'
+            'x-api-key': apiKey
         }
     });
 
