@@ -12,6 +12,9 @@ export const downloadAudio = async (url: string): Promise<void> => {
   try {
     const titleResponse = await fetch(`${endpoint}/title?url=${encodeURIComponent(url)}`, {
         method: 'GET',
+        headers: {
+            'x-api-key': '13dde8c6-kjna-8141-v6gu-86005e6fa28c'
+        }
     });
     if (!titleResponse.ok) {
         throw new Error('Failed to fetch title');
@@ -23,7 +26,7 @@ export const downloadAudio = async (url: string): Promise<void> => {
     const response: Response = await fetch(`${endpoint}/download?url=${encodeURIComponent(url)}`, {
         method: 'GET',
         headers: {
-        'X-API-Key': '13dde8c6-kjna-8141-v6gu-86005e6fa28c'
+            'x-api-key': '13dde8c6-kjna-8141-v6gu-86005e6fa28c'
         }
     });
 
